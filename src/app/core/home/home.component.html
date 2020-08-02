@@ -1,0 +1,52 @@
+<section>
+  <div class="example-button-row">
+    <div class="example-flex-container">
+      <div class="example-button-container">
+        <button mat-fab color="primary" [matMenuTriggerFor]="addMenu" aria-label="Add Item">
+          <mat-icon>note_add</mat-icon>
+        </button>
+        <mat-menu #addMenu="matMenu">
+          <button mat-menu-item [routerLink]="['/builders/cupboard']">
+            <span>Cupboard</span>
+          </button>
+        </mat-menu>
+      </div>
+    </div>
+  </div>
+</section>
+
+<mat-divider></mat-divider>
+
+<mat-table [dataSource]="dataSource" class="mat-elevation-z8" *ngIf="dataSource?.length; else noItems">
+  <ng-container matColumnDef="id">
+    <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="type">
+    <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.type}} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="symbol">
+    <mat-header-cell *matHeaderCellDef> Symbol </mat-header-cell>
+    <mat-cell *matCellDef="let element"> Actions </mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+
+<ng-template #noItems>
+  <mat-card>No item(s) added. Build now</mat-card>
+</ng-template>
+
+<section>
+  <div class="example-button-row">
+    <button mat-raised-button color="primary" (click)="donwload()">
+      <mat-icon>cloud_download</mat-icon>
+      Download
+    </button>
+  </div>
+</section>
