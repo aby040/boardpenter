@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { find } from 'lodash';
 
 import { BuilderService } from '../services/builder.service';
-import { StateService } from '../../core/services/state.service';
+import { ItemsType, StateService } from '../../core/services/state.service';
 import { CupboardDetails } from '../types/cupboard.types';
 import { Module } from '../../core/types/module.types';
 
@@ -12,17 +14,25 @@ import { Module } from '../../core/types/module.types';
 })
 export class CupboardComponent implements OnInit {
 
-  specification: Partial<CupboardDetails> = {
-    division: 2,
-    shelves: [0, 0],
-    layout: [0, 0, 0, 0],
-    backPanel: true,
-    skirting: false
-  };
+  specification: Partial<CupboardDetails>;
 
-  constructor(private builder: BuilderService, private state: StateService, private router: Router) { }
+  constructor(private builder: BuilderService, private state: StateService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
+    const id = this.route.snapshot.params.id;
+    if (id) {
+      const { data } = find(this.state.getItems(), (item: ItemsType) => item.id = +id) as ItemsType;
+      this.specification = data.specs;
+    } else {
+      this.specification = {
+        laminationInner: 'white',
+        division: 2,
+        shelves: [0, 0],
+        layout: [0, 0, 0, 0],
+        backPanel: true,
+        skirting: false
+      };
+    }
   }
 
   onDivisionCountChange(): void {
@@ -31,7 +41,6 @@ export class CupboardComponent implements OnInit {
 
   save(): void {
     const cupboard: Module = this.builder.buildCupboard(this.specification as CupboardDetails);
-    console.log(cupboard);
     this.state.addItem(
       cupboard.title,
       'CUPBOARD',

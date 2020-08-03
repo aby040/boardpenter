@@ -23,7 +23,7 @@ export class BuilderService {
       skirting,
       skirtingHeight,
       material,
-      laminationInner,
+      laminationInner = 'white',
       laminationOuter,
       division,
       shelves
@@ -31,10 +31,12 @@ export class BuilderService {
     /* tslint:disable:no-bitwise */
     const sideLayout = [(layout[0] ^ 1), (layout[1] ^ 1), (layout[2] ^ 1), (layout[3] ^ 1)];
     /* tslint:enable:no-bitwise */
+    const carCageMaterialLabel = laminationInner === laminationOuter ? `BSL ${laminationInner}` : `Os ${laminationOuter} Os ${laminationInner}`;
     const top: Panel = {
       label: 'Top',
       quantity: 1,
-      materialLabel: `${material} Os ${laminationOuter} Os ${laminationInner}`,
+      note: 'Grooving',
+      materialLabel: `${material} ${carCageMaterialLabel}`,
       dimensions: {
         length: Math.round(width - ((thickness * layout[0]) + (thickness * layout[1]))),
         width: Math.round(depth)
@@ -49,7 +51,7 @@ export class BuilderService {
       label: 'Bottom',
       quantity: 1,
       note: 'Grooving',
-      materialLabel: `${material} Os ${laminationOuter} Os ${laminationInner}`,
+      materialLabel: `${material} ${carCageMaterialLabel}`,
       dimensions: {
         length: Math.round(width - ((thickness * layout[2]) + (thickness * layout[3]))),
         width: Math.round(depth)
@@ -61,10 +63,10 @@ export class BuilderService {
       }
     };
     const left: Panel = {
-      label: 'Left',
+      label: 'Side - Left',
       quantity: 1,
       note: 'Grooving',
-      materialLabel: `${material} Os ${laminationOuter} Os ${laminationInner}`,
+      materialLabel: `${material} ${carCageMaterialLabel}`,
       dimensions: {
         length: Math.round(height - ((thickness * sideLayout[0]) + (thickness * sideLayout[3]))),
         width: Math.round(depth)
@@ -76,10 +78,10 @@ export class BuilderService {
       }
     };
     const rigth: Panel = {
-      label: 'Right',
+      label: 'Side - Right',
       quantity: 1,
       note: 'Grooving',
-      materialLabel: `${material} Os ${laminationOuter} Os ${laminationInner}`,
+      materialLabel: `${material} ${carCageMaterialLabel}`,
       dimensions: {
         length: Math.round(height - ((thickness * sideLayout[1]) + (thickness * sideLayout[2]))),
         width: Math.round(depth)
@@ -90,11 +92,11 @@ export class BuilderService {
         bottom: layout[2] ? edgeBand : ''
       }
     };
-    const panels: Panel[] = [top, left, rigth, bottom];
+    const panels: Panel[] = [rigth, left, top, bottom];
     panels.push({
       label: 'Division',
       quantity: (division - 1),
-      materialLabel: `${material} ${laminationInner}`,
+      materialLabel: `${material} BSL ${laminationInner}`,
       edgeband: {
         left: edgeBand,
         right: '',
@@ -115,7 +117,7 @@ export class BuilderService {
       panels.push({
         label: 'Shelf',
         quantity: shelves[div],
-        materialLabel: `${material} ${laminationInner}`,
+        materialLabel: `${material} BSL ${laminationInner}`,
         edgeband: {
           left: edgeBand,
           right: '',
@@ -131,7 +133,7 @@ export class BuilderService {
     panels.push({
       label: 'Shelf',
       quantity: shelves[shelves.length - 1],
-      materialLabel: `${material} ${laminationInner}`,
+      materialLabel: `${material} BSL ${laminationInner}`,
       edgeband: {
         left: edgeBand,
         right: '',
@@ -144,10 +146,11 @@ export class BuilderService {
       }
     });
     if (backPanel) {
+      const backPanelMaterialLabel = laminationInner === 'white' ? 'BSL white' : `Os ${laminationInner} Os white`;
       panels.push({
         label: 'Back Cover',
         quantity: 1,
-        materialLabel: `${material} ${laminationInner}`,
+        materialLabel: `${material} ${backPanelMaterialLabel}`,
         dimensions: {
           length: Math.round(height - thickness),
           width: Math.round(width - thickness)

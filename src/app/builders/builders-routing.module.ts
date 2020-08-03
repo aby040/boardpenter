@@ -8,7 +8,11 @@ const routes: Routes = [
     {
         path: 'cupboard',
         component: CupboardComponent
-    }
+    },
+    {
+      path: 'cupboard/:id',
+      component: CupboardComponent
+  }
 ];
 
 const BuildersRoutingModule: ModuleWithProviders<BuildersModule> = RouterModule.forChild(routes);

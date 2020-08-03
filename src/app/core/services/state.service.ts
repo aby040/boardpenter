@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 
+import { remove } from 'lodash';
+
 import { Module } from '../types/module.types';
 
 type ModuleTypes = 'CUPBOARD';
@@ -37,6 +39,10 @@ class StateService {
       type,
       data
     });
+  }
+
+  removeItem(id: number): void {
+    remove(this.items, (item: ItemsType) => item.id === id);
   }
 
 }
