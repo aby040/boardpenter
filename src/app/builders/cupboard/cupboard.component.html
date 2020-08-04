@@ -1,157 +1,199 @@
-<form class="example-form">
-  <p>
-    <mat-form-field class="example-full-width">
+<form class="cupboard">
+  <div class="row-container">
+    <mat-form-field class="full-width-field">
       <mat-label>Title</mat-label>
       <input matInput [(ngModel)]="specification.title" name="title">
     </mat-form-field>
-    <mat-form-field class="example-full-width">
+  </div>
+  <div class="row-container">
+    <mat-form-field class="full-width-field">
       <mat-label>Material</mat-label>
       <input matInput [(ngModel)]="specification.material" name="material">
     </mat-form-field>
-    <mat-form-field class="example-full-width">
+  </div>
+  <div class="row-container">
+    <mat-form-field class="full-width-field">
       <mat-label>Lamination (Outer)</mat-label>
       <input matInput [(ngModel)]="specification.laminationOuter" name="laminationOuter">
     </mat-form-field>
-    <mat-form-field class="example-full-width">
+  </div>
+  <div class="row-container">
+    <mat-form-field class="full-width-field">
       <mat-label>Lamination (Inner)</mat-label>
       <input matInput [(ngModel)]="specification.laminationInner" name="laminationInner">
     </mat-form-field>
-  </p>
-  <table class="example-full-width" cellspacing="0">
-    <tr>
-      <td>
-        <mat-form-field class="example-full-width">
-          <mat-label>Height</mat-label>
-          <input matInput [(ngModel)]="specification.height" name="height" type="number">
-          <mat-hint align="end">Heigth in mm</mat-hint>
+  </div>
+  <div class="row-container">
+    <mat-form-field>
+      <mat-label>Height</mat-label>
+      <input matInput [(ngModel)]="specification.height" name="height" type="number">
+      <mat-hint align="end">Heigth in mm</mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Width</mat-label>
+      <input matInput [(ngModel)]="specification.width" name="width" type="number">
+      <mat-hint align="end">Width in mm</mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Depth</mat-label>
+      <input matInput [(ngModel)]="specification.depth" name="depth" type="number">
+      <mat-hint align="end">Depth in mm</mat-hint>
+    </mat-form-field>
+  </div>
+  <div class="row-container">
+    <mat-form-field>
+      <mat-label>Division</mat-label>
+      <input matInput [(ngModel)]="specification.division" (ngModelChange)="onDivisionCountChange()" name="division"
+        type="number">
+      <mat-hint align="end">Number of Divisions</mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Thickness</mat-label>
+      <input matInput [(ngModel)]="specification.thickness" name="thickness" type="number">
+      <mat-hint align="end">Thickness in mm</mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Edge Band</mat-label>
+      <input matInput [(ngModel)]="specification.edgeBand" name="edgeBand" type="number">
+      <mat-hint align="end">Edgeband Code</mat-hint>
+    </mat-form-field>
+  </div>
+  <div class="row-container">
+    <mat-form-field *ngFor="let shelf of specification.shelves; let i = index">
+      <mat-label>Shelf</mat-label>
+      <input matInput [(ngModel)]="specification.shelves[i]" name="shelf-{{i}}" type="number">
+      <mat-hint align="end">Number of shelves in division {{i + 1}}</mat-hint>
+    </mat-form-field>
+  </div>
+
+  <div class="row-container">
+    <div class="layout-column">
+      <div class="checkbox-container">
+        <mat-checkbox [(ngModel)]="specification.dummy" (ngModelChange)="specification.dummyWidth = undefined"
+          name="dummy">
+          Dummy
+        </mat-checkbox>
+        <mat-form-field>
+          <mat-label>Dummy Width</mat-label>
+          <input matInput [disabled]="!specification.dummy" [(ngModel)]="specification.dummyWidth" name="dummyWidth"
+            type="number">
+          <mat-hint align="end">Dummy width in mm</mat-hint>
         </mat-form-field>
-      </td>
-      <td>
-        <mat-form-field class="example-full-width">
-          <mat-label>Width</mat-label>
-          <input matInput [(ngModel)]="specification.width" name="width" type="number">
-          <mat-hint align="end">Width in mm</mat-hint>
-        </mat-form-field>
-      </td>
-      <td>
-        <mat-form-field class="example-full-width">
-          <mat-label>Depth</mat-label>
-          <input matInput [(ngModel)]="specification.depth" name="depth" type="number">
-          <mat-hint align="end">Depth in mm</mat-hint>
-        </mat-form-field>
-      </td>
-    </tr>
-  </table>
-  <table class="example-full-width" cellspacing="0">
-    <tr>
-      <td>
-        <mat-button-toggle-group #group="matButtonToggleGroup" [(value)] = "specification.layout[0]">
-          <mat-button-toggle [value]="0" aria-label="Top Panel">
-            <mat-icon>format_align_left</mat-icon>
-          </mat-button-toggle>
-          <mat-button-toggle [value]="1" aria-label="Side Panel">
-            <mat-icon>format_align_center</mat-icon>
-          </mat-button-toggle>
-        </mat-button-toggle-group>
-      </td>
-      <td>
-        <mat-button-toggle-group #group="matButtonToggleGroup" [(value)] = "specification.layout[1]">
-          <mat-button-toggle [value]="0" aria-label="Top Panel">
-            <mat-icon>format_align_left</mat-icon>
-          </mat-button-toggle>
-          <mat-button-toggle [value]="1" aria-label="Side Panel">
-            <mat-icon>format_align_center</mat-icon>
-          </mat-button-toggle>
-        </mat-button-toggle-group>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <mat-button-toggle-group #bottomLeft="matButtonToggleGroup" [(value)] = "specification.layout[2]">
-          <mat-button-toggle [value]="0" aria-label="Bottom Panel">
-            <mat-icon>format_align_left</mat-icon>
-          </mat-button-toggle>
-          <mat-button-toggle [value]="1" aria-label="Side Panel">
-            <mat-icon>format_align_center</mat-icon>
-          </mat-button-toggle>
-        </mat-button-toggle-group>
-      </td>
-      <td>
-        <mat-button-toggle-group #bottomRight="matButtonToggleGroup" [(value)] = "specification.layout[3]">
-          <mat-button-toggle [value]="0" aria-label="Bottom Panel">
-            <mat-icon>format_align_left</mat-icon>
-          </mat-button-toggle>
-          <mat-button-toggle [value]="1" aria-label="Side Panel">
-            <mat-icon>format_align_center</mat-icon>
-          </mat-button-toggle>
-        </mat-button-toggle-group>
-      </td>
-    </tr>
-  </table>
-  <table class="example-full-width" cellspacing="0">
-    <tr>
-      <td>
-        <mat-checkbox class="example-margin" [(ngModel)]="specification.backPanel" name="backPanel">Back Panel</mat-checkbox>
-      </td>
-      <td>
-        <mat-checkbox
-          class="example-margin"
-          [(ngModel)]="specification.skirting"
-          (ngModelChange)="specification.skirtingHeight = undefined"
-          name="skirting"
-        >
+      </div>
+      <div class="checkbox-container">
+        <mat-checkbox [(ngModel)]="specification.skirting" (ngModelChange)="specification.skirtingHeight = undefined"
+          name="skirting">
           Skirting
         </mat-checkbox>
+        <mat-form-field>
+          <mat-label>Skirting Height</mat-label>
+          <input matInput [disabled]="!specification.skirting" [(ngModel)]="specification.skirtingHeight"
+            name="skirtingHeight" type="number">
+          <mat-hint align="end">Height of skirting in mm</mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="checkbox-container">
+        <mat-checkbox [(ngModel)]="specification.backPanel" name="backPanel">Back Panel</mat-checkbox>
+      </div>
+    </div>
+    <div class="layout-column">
+      <div class="layout-container">
+        <mat-button-toggle-group #group="matButtonToggleGroup" [(value)]="specification.layout[0]">
+          <mat-button-toggle [value]="0" aria-label="Top Panel">
+            <mat-icon>format_align_left</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle [value]="1" aria-label="Side Panel">
+            <mat-icon>format_align_center</mat-icon>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+        <mat-button-toggle-group #group="matButtonToggleGroup" [(value)]="specification.layout[1]">
+          <mat-button-toggle [value]="0" aria-label="Top Panel">
+            <mat-icon>format_align_left</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle [value]="1" aria-label="Side Panel">
+            <mat-icon>format_align_center</mat-icon>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+      <div class="layout-container">
+        <mat-button-toggle-group #bottomLeft="matButtonToggleGroup" [(value)]="specification.layout[2]">
+          <mat-button-toggle [value]="0" aria-label="Bottom Panel">
+            <mat-icon>format_align_left</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle [value]="1" aria-label="Side Panel">
+            <mat-icon>format_align_center</mat-icon>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+        <mat-button-toggle-group #bottomRight="matButtonToggleGroup" [(value)]="specification.layout[3]">
+          <mat-button-toggle [value]="0" aria-label="Bottom Panel">
+            <mat-icon>format_align_left</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle [value]="1" aria-label="Side Panel">
+            <mat-icon>format_align_center</mat-icon>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+
+    </div>
+  </div>
+
+  <!--
+  <table cellspacing="0">
+    <tr>
+      <td>
+
+      </td>
+      <td>
+
+      </td>
+    </tr>
+    <tr>
+      <td>
+
+      </td>
+      <td>
+
       </td>
     </tr>
   </table>
-  <table class="example-full-width" cellspacing="0">
+  <table cellspacing="0">
     <tr>
       <td>
-        <mat-form-field class="example-full-width">
-          <mat-label>Thickness</mat-label>
-          <input matInput [(ngModel)]="specification.thickness" name="thickness" type="number">
-          <mat-hint align="end">Thickness in mm</mat-hint>
-        </mat-form-field>
+
       </td>
       <td>
-        <mat-form-field class="example-full-width">
-          <mat-label>Edge Band</mat-label>
-          <input matInput [(ngModel)]="specification.edgeBand" name="edgeBand" type="number">
-          <mat-hint align="end">Edgeband Code</mat-hint>
-        </mat-form-field>
+
+      </td>
+    </tr>
+  </table>
+  <table cellspacing="0">
+    <tr>
+      <td>
+
       </td>
       <td>
-        <mat-form-field class="example-full-width">
-          <mat-label>Skirting Height</mat-label>
-          <input matInput [disabled]="!specification.skirting" [(ngModel)]="specification.skirtingHeight" name="skirtingHeight" type="number">
-          <mat-hint align="end">Height of skirting in mm</mat-hint>
-        </mat-form-field>
+
+      </td>
+      <td>
+
       </td>
     </tr>
   </table>
   <p>
-    <mat-form-field class="example-full-width">
-      <mat-label>Division</mat-label>
-      <input matInput [(ngModel)]="specification.division" (ngModelChange)="onDivisionCountChange()" name="division" type="number">
-      <mat-hint align="end">Number of Divisions</mat-hint>
-    </mat-form-field>
+
   </p>
-  <table class="example-full-width" cellspacing="0">
+  <table cellspacing="0">
     <tr>
       <td *ngFor="let shelf of specification.shelves; let i = index">
-        <mat-form-field class="example-full-width">
-          <mat-label>Shelf</mat-label>
-          <input matInput [(ngModel)]="specification.shelves[i]" name="shelf-{{i}}" type="number">
-          <mat-hint align="end">Number of shelves in division {{i + 1}}</mat-hint>
-        </mat-form-field>
+
       </td>
     </tr>
   </table>
+  -->
+  <section class="button-container">
+    <div class="buttons-holder">
+      <button mat-raised-button [routerLink]="['/']">Cancel</button>
+      <button mat-raised-button color="primary" (click)="save()">Save</button>
+    </div>
+  </section>
 </form>
-<section>
-  <div class="example-button-row">
-    <button mat-raised-button [routerLink]="['/']">Cancel</button>
-    <button mat-raised-button color="primary" (click)="save()">Save</button>
-  </div>
-</section>

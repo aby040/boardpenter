@@ -17,6 +17,8 @@ interface CupboardDetails {
   backPanel: boolean;
   skirting: boolean;
   skirtingHeight: number;
+  dummy: boolean;
+  dummyWidth: number;
 }
 
 

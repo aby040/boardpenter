@@ -22,6 +22,8 @@ export class BuilderService {
       backPanel,
       skirting,
       skirtingHeight,
+      dummy,
+      dummyWidth,
       material,
       laminationInner = 'white',
       laminationOuter,
@@ -152,8 +154,8 @@ export class BuilderService {
         quantity: 1,
         materialLabel: `${material} ${backPanelMaterialLabel}`,
         dimensions: {
-          length: Math.round(height - thickness),
-          width: Math.round(width - thickness)
+          length: Math.round(width - thickness),
+          width: Math.round(height - thickness)
         }
       });
     }
@@ -174,6 +176,26 @@ export class BuilderService {
         dimensions: {
           length: Math.round(depth - (thickness * 2)),
           width: Math.round(skirtingHeight)
+        }
+      });
+    }
+    if (dummy) {
+      panels.push({
+        label: 'Outer Dummy',
+        quantity: 1,
+        materialLabel: `${material} ${carCageMaterialLabel}`,
+        dimensions: {
+          length: Math.round(height),
+          width: Math.round(dummyWidth)
+        }
+      });
+      panels.push({
+        label: 'Inner Dummy',
+        quantity: 1,
+        materialLabel: `${material} BSL ${laminationInner}`,
+        dimensions: {
+          length: Math.round(height - (thickness * 2)),
+          width: Math.round(dummyWidth)
         }
       });
     }
