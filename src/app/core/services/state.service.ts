@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { remove } from 'lodash';
+import { remove, find } from 'lodash';
 
 import { Module } from '../types/module.types';
 
@@ -41,8 +41,14 @@ class StateService {
     });
   }
 
+  editItem(id: number, name: string, type: ModuleTypes, data: any): void {
+    const module = find(this.items, (item: ItemsType) => item.id === id);
+    Object.assign(module, { name, type, data });
+  }
+
   removeItem(id: number): void {
     remove(this.items, (item: ItemsType) => item.id === id);
+    console.log(this.items);
   }
 
 }

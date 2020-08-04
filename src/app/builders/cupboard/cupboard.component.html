@@ -100,36 +100,36 @@
       <div class="layout-container">
         <mat-button-toggle-group #group="matButtonToggleGroup" [(value)]="specification.layout[0]">
           <mat-button-toggle [value]="0" aria-label="Top Panel">
-            <mat-icon>format_align_left</mat-icon>
+            <mat-icon svgIcon="cage_top_left_a"></mat-icon>
           </mat-button-toggle>
           <mat-button-toggle [value]="1" aria-label="Side Panel">
-            <mat-icon>format_align_center</mat-icon>
+            <mat-icon svgIcon="cage_top_left_b"></mat-icon>
           </mat-button-toggle>
         </mat-button-toggle-group>
         <mat-button-toggle-group #group="matButtonToggleGroup" [(value)]="specification.layout[1]">
           <mat-button-toggle [value]="0" aria-label="Top Panel">
-            <mat-icon>format_align_left</mat-icon>
+            <mat-icon svgIcon="cage_top_right_a"></mat-icon>
           </mat-button-toggle>
           <mat-button-toggle [value]="1" aria-label="Side Panel">
-            <mat-icon>format_align_center</mat-icon>
+            <mat-icon svgIcon="cage_top_right_b"></mat-icon>
           </mat-button-toggle>
         </mat-button-toggle-group>
       </div>
       <div class="layout-container">
-        <mat-button-toggle-group #bottomLeft="matButtonToggleGroup" [(value)]="specification.layout[2]">
+        <mat-button-toggle-group #bottomLeft="matButtonToggleGroup" [(value)]="specification.layout[3]">
           <mat-button-toggle [value]="0" aria-label="Bottom Panel">
-            <mat-icon>format_align_left</mat-icon>
+            <mat-icon svgIcon="cage_bottom_left_a"></mat-icon>
           </mat-button-toggle>
           <mat-button-toggle [value]="1" aria-label="Side Panel">
-            <mat-icon>format_align_center</mat-icon>
+            <mat-icon svgIcon="cage_bottom_left_b"></mat-icon>
           </mat-button-toggle>
         </mat-button-toggle-group>
-        <mat-button-toggle-group #bottomRight="matButtonToggleGroup" [(value)]="specification.layout[3]">
+        <mat-button-toggle-group #bottomRight="matButtonToggleGroup" [(value)]="specification.layout[2]">
           <mat-button-toggle [value]="0" aria-label="Bottom Panel">
-            <mat-icon>format_align_left</mat-icon>
+            <mat-icon svgIcon="cage_bottom_right_a"></mat-icon>
           </mat-button-toggle>
           <mat-button-toggle [value]="1" aria-label="Side Panel">
-            <mat-icon>format_align_center</mat-icon>
+            <mat-icon svgIcon="cage_bottom_right_b"></mat-icon>
           </mat-button-toggle>
         </mat-button-toggle-group>
       </div>

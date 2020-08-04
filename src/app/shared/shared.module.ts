@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -33,11 +34,13 @@ const MATERIAL_MODULES = [
   imports: [
     CommonModule,
     FormsModule,
+    HttpClientModule,
     MATERIAL_MODULES
   ],
   exports: [
     CommonModule,
     FormsModule,
+    HttpClientModule,
     MATERIAL_MODULES
   ]
 })

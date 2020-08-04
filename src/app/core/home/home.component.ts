@@ -11,13 +11,20 @@ import { DownloaderUtil } from '../utils/donwloader';
 })
 export class HomeComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'name', 'type', 'action'];
+  displayedColumns: string[] = ['name', 'type', 'action'];
   dataSource: ItemsType[];
 
   constructor(public dialog: MatDialog, private router: Router, private state: StateService) { }
 
   ngOnInit(): void {
-    this.dataSource = this.state.getItems();
+    this.setDataSource();
+  }
+
+  setDataSource(): void {
+    this.dataSource = this.state.getItems().map((module) => {
+      const { id, name, type } = module;
+      return { id, name, type };
+    });
   }
 
   editItem(id: number): void {
@@ -29,13 +36,14 @@ export class HomeComponent implements OnInit {
     confirmDeleteDialog.afterClosed().subscribe(result => {
       if (result) {
         this.state.removeItem(id);
+        this.setDataSource();
       }
     });
   }
 
   download(): void {
     const modules = [];
-    this.dataSource.forEach((item: ItemsType) => {
+    this.state.getItems().forEach((item: ItemsType) => {
       modules.push(item.data.measurements);
     });
     DownloaderUtil.buildSmart2dCsv(modules);
