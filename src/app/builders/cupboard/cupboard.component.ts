@@ -26,6 +26,7 @@ export class CupboardComponent implements OnInit {
     } else {
       this.specification = {
         laminationInner: 'white',
+        backPanelMaterial: '6mm PLY',
         division: 2,
         shelves: [0, 0],
         layout: [0, 0, 0, 0],

@@ -15,6 +15,7 @@ interface CupboardDetails {
   division: number;
   shelves: number[];
   backPanel: boolean;
+  backPanelMaterial: string;
   skirting: boolean;
   skirtingHeight: number;
   dummy: boolean;

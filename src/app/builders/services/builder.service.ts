@@ -20,6 +20,7 @@ export class BuilderService {
       thickness,
       edgeBand,
       backPanel,
+      backPanelMaterial,
       skirting,
       skirtingHeight,
       dummy,
@@ -152,7 +153,7 @@ export class BuilderService {
       panels.push({
         label: 'Back Cover',
         quantity: 1,
-        materialLabel: `${material} ${backPanelMaterialLabel}`,
+        materialLabel: `${backPanelMaterial} ${backPanelMaterialLabel}`,
         dimensions: {
           length: Math.round(width - thickness),
           width: Math.round(height - thickness)

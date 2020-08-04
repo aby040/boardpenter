@@ -93,7 +93,7 @@
         </mat-form-field>
       </div>
       <div class="checkbox-container">
-        <mat-checkbox [(ngModel)]="specification.backPanel" name="backPanel">Back Panel</mat-checkbox>
+        <mat-checkbox [(ngModel)]="specification.backPanel" (ngModelChange)="specification.backPanelMaterial = undefined" name="backPanel">Back Panel</mat-checkbox>
       </div>
     </div>
     <div class="layout-column">
@@ -133,63 +133,14 @@
           </mat-button-toggle>
         </mat-button-toggle-group>
       </div>
-
     </div>
   </div>
-
-  <!--
-  <table cellspacing="0">
-    <tr>
-      <td>
-
-      </td>
-      <td>
-
-      </td>
-    </tr>
-    <tr>
-      <td>
-
-      </td>
-      <td>
-
-      </td>
-    </tr>
-  </table>
-  <table cellspacing="0">
-    <tr>
-      <td>
-
-      </td>
-      <td>
-
-      </td>
-    </tr>
-  </table>
-  <table cellspacing="0">
-    <tr>
-      <td>
-
-      </td>
-      <td>
-
-      </td>
-      <td>
-
-      </td>
-    </tr>
-  </table>
-  <p>
-
-  </p>
-  <table cellspacing="0">
-    <tr>
-      <td *ngFor="let shelf of specification.shelves; let i = index">
-
-      </td>
-    </tr>
-  </table>
-  -->
+  <div class="row-container">
+    <mat-form-field class="full-width-field">
+      <mat-label>Back Panel Material</mat-label>
+      <input matInput [disabled]="!specification.backPanel" [(ngModel)]="specification.backPanelMaterial" name="backPanelMaterial">
+    </mat-form-field>
+  </div>
   <section class="button-container">
     <div class="buttons-holder">
       <button mat-raised-button [routerLink]="['/']">Cancel</button>
