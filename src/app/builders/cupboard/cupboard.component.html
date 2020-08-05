@@ -31,7 +31,7 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label>Width</mat-label>
-      <input matInput [(ngModel)]="specification.width" name="width" type="number">
+      <input matInput [(ngModel)]="specification.width" (ngModelChange)="onDivisionCountChange()" name="width" type="number">
       <mat-hint align="end">Width in mm</mat-hint>
     </mat-form-field>
     <mat-form-field>
@@ -42,14 +42,8 @@
   </div>
   <div class="row-container">
     <mat-form-field>
-      <mat-label>Division</mat-label>
-      <input matInput [(ngModel)]="specification.division" (ngModelChange)="onDivisionCountChange()" name="division"
-        type="number">
-      <mat-hint align="end">Number of Divisions</mat-hint>
-    </mat-form-field>
-    <mat-form-field>
       <mat-label>Thickness</mat-label>
-      <input matInput [(ngModel)]="specification.thickness" name="thickness" type="number">
+      <input matInput [(ngModel)]="specification.thickness" (ngModelChange)="onDivisionCountChange()" name="thickness" type="number">
       <mat-hint align="end">Thickness in mm</mat-hint>
     </mat-form-field>
     <mat-form-field>
@@ -57,17 +51,42 @@
       <input matInput [(ngModel)]="specification.edgeBand" name="edgeBand" type="number">
       <mat-hint align="end">Edgeband Code</mat-hint>
     </mat-form-field>
-  </div>
-  <div class="row-container">
-    <mat-form-field *ngFor="let shelf of specification.shelves; let i = index">
-      <mat-label>Shelf</mat-label>
-      <input matInput [(ngModel)]="specification.shelves[i]" name="shelf-{{i}}" type="number">
-      <mat-hint align="end">Number of shelves in division {{i + 1}}</mat-hint>
+    <mat-form-field>
+      <mat-label>Division</mat-label>
+      <input matInput [(ngModel)]="specification.division" (ngModelChange)="onDivisionCountChange()" name="division"
+        type="number" min="1">
+      <mat-hint align="end">Number of Divisions</mat-hint>
     </mat-form-field>
+  </div>
+  <div class="compartment-container">
+    <div class="compartment-column" *ngFor="let compartment of specification.compartments; let i = index; trackBy: trackByShelfIndex;">
+      <mat-form-field>
+        <mat-label>Width</mat-label>
+        <input matInput [(ngModel)]="compartment.width" name="comp-width-{{i}}" type="number" min="1">
+        <mat-hint align="end">Width of compartment</mat-hint>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Shelf</mat-label>
+        <input matInput [(ngModel)]="compartment.shelves" name="shelf-{{i}}" type="number" min="1">
+        <mat-hint align="end">Number of shelves</mat-hint>
+      </mat-form-field>
+    </div>
   </div>
 
   <div class="row-container">
     <div class="layout-column">
+      <div class="checkbox-container">
+        <mat-checkbox [(ngModel)]="isSlidingDoor" (ngModelChange)="specification.frontSetBack = undefined"
+          name="isSlidingDoor">
+          Sliding Door
+        </mat-checkbox>
+        <mat-form-field>
+          <mat-label>Setback</mat-label>
+          <input matInput [disabled]="!isSlidingDoor" [(ngModel)]="specification.frontSetBack" name="frontSetBack"
+            type="number">
+          <mat-hint align="end">Setback from front in mm</mat-hint>
+        </mat-form-field>
+      </div>
       <div class="checkbox-container">
         <mat-checkbox [(ngModel)]="specification.dummy" (ngModelChange)="specification.dummyWidth = undefined"
           name="dummy">
@@ -93,7 +112,19 @@
         </mat-form-field>
       </div>
       <div class="checkbox-container">
-        <mat-checkbox [(ngModel)]="specification.backPanel" (ngModelChange)="specification.backPanelMaterial = undefined" name="backPanel">Back Panel</mat-checkbox>
+        <mat-checkbox
+          [(ngModel)]="specification.backPanel"
+          (ngModelChange)="specification.backPanelMaterial = undefined; specification.backPanelBuffer = undefined"
+          name="backPanel"
+        >
+          Back Panel
+        </mat-checkbox>
+        <mat-form-field>
+          <mat-label>Distance</mat-label>
+          <input matInput [disabled]="!specification.backPanel" [(ngModel)]="specification.backPanelBuffer"
+            name="backPanelBuffer" type="number">
+          <mat-hint align="end">Distance from back side</mat-hint>
+        </mat-form-field>
       </div>
     </div>
     <div class="layout-column">
