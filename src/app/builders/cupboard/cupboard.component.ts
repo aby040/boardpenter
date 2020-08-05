@@ -4,11 +4,11 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 
 
-import { find } from 'lodash';
+import { clone, find } from 'lodash';
 
 import { BuilderService } from '../services/builder.service';
 import { ItemsType, StateService } from '../../core/services/state.service';
-import { CupboardDetails } from '../types/cupboard.types';
+import { CupboardDetails, Compartment } from '../types/cupboard.types';
 import { Module } from '../../core/types/module.types';
 
 @Component({
@@ -66,13 +66,20 @@ export class CupboardComponent implements OnInit {
     this.id = parseInt(this.route.snapshot.params.id, 10);
     if (this.id) {
       const { data } = find(this.state.getItems(), (item: ItemsType) => item.id === this.id) as ItemsType;
-      this.specification = data.specs;
+      this.specification = Object.assign({}, data.specs, {
+        layout: clone(data.specs.layout),
+        compartments: data.specs.compartments.map((compartment: Compartment) => {
+          const { shelves, buffer, width } = compartment;
+          return { shelves, buffer, width };
+        })
+      });
     } else {
       this.specification = {
         laminationInner: 'white',
         backPanelMaterial: '6mm PLY',
+        backPanelBuffer: 25,
         division: 2,
-        shelves: [0, 0],
+        compartments: [],
         layout: [0, 0, 0, 0],
         backPanel: true,
         skirting: false
@@ -81,7 +88,34 @@ export class CupboardComponent implements OnInit {
   }
 
   onDivisionCountChange(): void {
-    this.specification.shelves = new Array(this.specification.division).fill(0);
+    const { width, thickness, division } = this.specification;
+    if (width && thickness && division) {
+      const totalShelfWidth = width - (thickness * (division + 1));
+      const shelfWidth = Math.floor(totalShelfWidth / division);
+      let shelfWidthSum = 0;
+      const compartments: Compartment[] = [];
+      for (let i = 0; i < division; i++) {
+        let compWidth: number;
+        if (i < division - 1) {
+          compWidth = Math.round(shelfWidth);
+          shelfWidthSum = shelfWidthSum + compWidth;
+        } else {
+          compWidth = Math.round(totalShelfWidth - shelfWidthSum);
+        }
+        compartments.push({
+          width: compWidth,
+          shelves: 1,
+          buffer: 0
+        });
+        this.specification.compartments = compartments;
+      }
+    } else {
+      this.specification.compartments = [];
+    }
+  }
+
+  trackByShelfIndex(index: number): number {
+    return index;
   }
 
   save(): void {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { CupboardDetails,  } from '../types/cupboard.types';
+import { CupboardDetails, } from '../types/cupboard.types';
 import { Module, Panel } from '../../core/types/module.types';
 
 @Injectable({
@@ -21,6 +21,7 @@ export class BuilderService {
       edgeBand,
       backPanel,
       backPanelMaterial,
+      backPanelBuffer,
       skirting,
       skirtingHeight,
       dummy,
@@ -29,7 +30,7 @@ export class BuilderService {
       laminationInner = 'white',
       laminationOuter,
       division,
-      shelves
+      compartments
     } = spec;
     /* tslint:disable:no-bitwise */
     const sideLayout = [(layout[0] ^ 1), (layout[1] ^ 1), (layout[2] ^ 1), (layout[3] ^ 1)];
@@ -108,55 +109,40 @@ export class BuilderService {
       },
       dimensions: {
         length: Math.round(height - (thickness * 2)),
-        width: Math.round(depth - 25)
+        width: Math.round(depth - backPanelBuffer)
       }
     });
-    const totalShelfWidth = width - (thickness * (division + 1));
-    const shelfWidth = Math.floor(totalShelfWidth / division);
-    let shelfWidthSum = 0;
-    for (let div = 0; div < division - 1; div++) {
-      const length = Math.round(shelfWidth);
-      shelfWidthSum = shelfWidthSum + length;
-      panels.push({
-        label: 'Shelf',
-        quantity: shelves[div],
-        materialLabel: `${material} BSL ${laminationInner}`,
-        edgeband: {
-          left: edgeBand,
-          right: '',
-          top: '',
-          bottom: ''
-        },
-        dimensions: {
-          length,
-          width: Math.round(depth - 25)
-        }
-      });
+    for (const comp of compartments) {
+      if (comp.shelves > 1) {
+        panels.push({
+          label: 'Shelf',
+          quantity: (comp.shelves - 1),
+          materialLabel: `${material} BSL ${laminationInner}`,
+          edgeband: {
+            left: edgeBand,
+            right: '',
+            top: '',
+            bottom: ''
+          },
+          dimensions: {
+            length: comp.width,
+            width: Math.round(depth - backPanelBuffer - comp.buffer)
+          }
+        });
+      }
+
     }
-    panels.push({
-      label: 'Shelf',
-      quantity: shelves[shelves.length - 1],
-      materialLabel: `${material} BSL ${laminationInner}`,
-      edgeband: {
-        left: edgeBand,
-        right: '',
-        top: '',
-        bottom: ''
-      },
-      dimensions: {
-        length: Math.round(totalShelfWidth - shelfWidthSum),
-        width: Math.round(depth - 25)
-      }
-    });
     if (backPanel) {
       const backPanelMaterialLabel = laminationInner === 'white' ? 'BSL white' : `Os ${laminationInner} Os white`;
+      const length = Math.max(Math.round(width - thickness), Math.round(height - thickness));
+      const breadth = Math.min(Math.round(width - thickness), Math.round(height - thickness));
       panels.push({
         label: 'Back Cover',
         quantity: 1,
         materialLabel: `${backPanelMaterial} ${backPanelMaterialLabel}`,
         dimensions: {
-          length: Math.round(width - thickness),
-          width: Math.round(height - thickness)
+          length,
+          width: breadth
         }
       });
     }

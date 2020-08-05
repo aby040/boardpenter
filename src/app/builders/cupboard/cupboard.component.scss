@@ -17,6 +17,26 @@
   width: 40%;
 }
 
+.compartment-container {
+  padding-top: 10px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 40%;
+}
+
+.compartment-column {
+  background-color: #cccccc;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border-radius: 10px;
+  width: 28%;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #ffffff;
+}
+
 .layout-column {
   width: 50%;
   flex-direction: column;
