@@ -110,7 +110,7 @@ export class BuilderService {
       },
       dimensions: {
         length: Math.round(height - (thickness * 2)),
-        width: Math.round(depth - backPanelBuffer)
+        width: Math.round(depth - backPanelBuffer - frontSetBack)
       }
     });
     for (const comp of compartments) {
